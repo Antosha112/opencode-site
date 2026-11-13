@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Первый сайт в OpenCode</title>
+<style>
+  :root {
+    --bg: #0b0d12;
+    --card: rgba(255, 255, 255, 0.04);
+    --border: rgba(255, 255, 255, 0.1);
+    --text: #e8ecf4;
+    --muted: #8b93a7;
+    --accent: #5b8cff;
+    --accent-2: #a855f7;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    overflow: hidden;
+  }
+
+  /* Мягкие светящиеся пятна на фоне */
+  .blob {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(90px);
+    opacity: 0.45;
+    pointer-events: none;
+    animation: float 14s ease-in-out infinite alternate;
+  }
+  .blob.a { width: 420px; height: 420px; background: var(--accent); top: -120px; left: -80px; }
+  .blob.b { width: 380px; height: 380px; background: var(--accent-2); bottom: -140px; right: -60px; animation-delay: -7s; }
+
+  @keyframes float {
+    from { transform: translate(0, 0) scale(1); }
+    to   { transform: translate(40px, 30px) scale(1.15); }
+  }
+
+  .card {
+    position: relative;
+    width: min(560px, 100%);
+    padding: 40px 36px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    backdrop-filter: blur(18px);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+    animation: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #b9c6ff;
+    background: rgba(91, 140, 255, 0.12);
+    border: 1px solid rgba(91, 140, 255, 0.25);
+    border-radius: 999px;
+  }
+  .dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: #4ade80;
+    box-shadow: 0 0 10px #4ade80;
+  }
+
+  h1 {
+    margin: 20px 0 10px;
+    font-size: clamp(28px, 5vw, 40px);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+  h1 span {
+    background: linear-gradient(100deg, #7aa2ff, #c084fc);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  p.lead {
+    color: var(--muted);
+    font-size: 16px;
+    line-height: 1.6;
+    max-width: 44ch;
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 28px;
+  }
+
+  button {
+    font: inherit;
+    padding: 12px 20px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text);
+    cursor: pointer;
+    transition: transform 0.15s ease, background 0.2s ease, border-color 0.2s ease;
+  }
+  button:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.22); }
+  button:active { transform: scale(0.97); }
+
+  button.primary {
+    background: linear-gradient(100deg, var(--accent), var(--accent-2));
+    border-color: transparent;
+    color: #fff;
+    font-weight: 600;
+  }
+  button.primary:hover { filter: brightness(1.1); }
+
+  .meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .meta strong { display: block; margin-top: 4px; color: var(--text); font-weight: 600; }
+</style>
+</head>
+<body>
+  <div class="blob a"></div>
+  <div class="blob b"></div>
+
+  <main class="card">
+    <div class="badge"><span class="dot"></span> локальный сервер</div>
+
+    <h1>Привет, <span id="name">Антон</span> 👋</h1>
+    <p class="lead">
+      Это первый сайт, собранный в OpenCode: один HTML-файл, без сборки и зависимостей.
+      Кнопки справа работают на чистом JavaScript.
+    </p>
+
+    <div class="row">
+      <button class="primary" id="greet">Поздороваться</button>
+      <button id="theme">Сменить тему</button>
+      <button id="time">Показать время</button>
+    </div>
+
+    <div class="meta">
+      <div>Статус<strong id="status">Работает</strong></div>
+      <div>Часы<strong id="clock">--:--:--</strong></div>
+      <div>Клики<strong id="clicks">0</strong></div>
+    </div>
+  </main>
+
+<script>
+  const greetings = [
+    "Привет! Рад тебя видеть.",
+    "Сайт жив и отвечает.",
+    "JavaScript на месте.",
+    "Можно деплоить на хостинг."
+  ];
+  let i = 0;
+  let clicks = 0;
+
+  const clock = document.getElementById("clock");
+  const tick = () => {
+    clock.textContent = new Date().toLocaleTimeString("ru-RU");
+  };
+  tick();
+  setInterval(tick, 1000);
+
+  document.getElementById("greet").addEventListener("click", () => {
+    clicks++;
+    document.getElementById("clicks").textContent = clicks;
+    document.getElementById("status").textContent = greetings[i % greetings.length];
+    i++;
+  });
+
+  document.getElementById("time").addEventListener("click", () => {
+    document.getElementById("status").textContent =
+      "Сейчас " + new Date().toLocaleTimeString("ru-RU");
+  });
+
+  let light = false;
+  document.getElementById("theme").addEventListener("click", () => {
+    light = !light;
+    const root = document.documentElement;
+    if (light) {
+      root.style.setProperty("--bg", "#f4f6fb");
+      root.style.setProperty("--card", "rgba(255,255,255,0.75)");
+      root.style.setProperty("--border", "rgba(15,23,42,0.1)");
+      root.style.setProperty("--text", "#0f172a");
+      root.style.setProperty("--muted", "#5b6478");
+    } else {
+      root.style.setProperty("--bg", "#0b0d12");
+      root.style.setProperty("--card", "rgba(255,255,255,0.04)");
+      root.style.setProperty("--border", "rgba(255,255,255,0.1)");
+      root.style.setProperty("--text", "#e8ecf4");
+      root.style.setProperty("--muted", "#8b93a7");
+    }
+  });
+</script>
+</body>
+</html>
