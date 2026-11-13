@@ -22,7 +22,49 @@
       return;
     }
 
-    document.title = `${car.brand} ${car.model} — AURUM Motors`;
+    const baseUrl = "https://antosha112.github.io/opencode-site/";
+    const pageUrl = `${baseUrl}car.html?id=${encodeURIComponent(car.id)}`;
+    const priceText = new Intl.NumberFormat("ru-RU").format(car.price);
+    const pageTitle = `${car.brand} ${car.model} — купить в Москве | AURUM Motors`;
+    const pageDesc = `${car.brand} ${car.model} ${car.trim}: ${car.power} л.с., разгон ${car.accel} с. Цена ${priceText} ₽, лизинг, гарантия 2 года и тест-драйв в Москве.`;
+
+    document.title = pageTitle;
+    const setMeta = (id, value) => {
+      const el = document.getElementById(id);
+      if (el) el.setAttribute("content", value);
+    };
+    setMeta("meta-description", pageDesc);
+    setMeta("og-title", pageTitle);
+    setMeta("og-description", pageDesc);
+    setMeta("og-url", pageUrl);
+    setMeta("og-image", baseUrl + car.image);
+    const canonical = document.getElementById("canonical");
+    if (canonical) canonical.setAttribute("href", pageUrl);
+
+    const jsonld = document.getElementById("car-jsonld");
+    if (jsonld) {
+      jsonld.textContent = JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Car",
+        name: `${car.brand} ${car.model}`,
+        brand: { "@type": "Brand", name: car.brand },
+        model: car.model,
+        vehicleModelDate: car.trim,
+        bodyType: car.catLabel,
+        fuelType: car.cat === "ev" ? "Electric" : "Petrol",
+        vehicleEngine: { "@type": "EngineSpecification", name: car.engine },
+        image: baseUrl + car.image,
+        description: car.description,
+        offers: {
+          "@type": "Offer",
+          price: car.price,
+          priceCurrency: "RUB",
+          availability: "https://schema.org/InStock",
+          url: pageUrl,
+          seller: { "@type": "AutoDealer", name: "AURUM Motors" }
+        }
+      });
+    }
 
     document.getElementById("crumb-model").textContent = `${car.brand} ${car.model}`;
     const image = document.getElementById("detail-image");
