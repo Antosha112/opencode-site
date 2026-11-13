@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Автомобиль — AURUM Motors</title>
+<meta name="description" content="Подробная информация об автомобиле в AURUM Motors." />
+<link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+
+<header id="header">
+  <div class="wrap nav">
+    <a class="logo" href="index.html" aria-label="AURUM Motors — на главную">
+      <span class="logo-mark">A</span>
+      <span class="logo-text">AURUM<span>MOTORS</span></span>
+    </a>
+
+    <nav class="menu" id="menu">
+      <a href="index.html#catalog">Каталог</a>
+      <a href="index.html#calculator">Лизинг</a>
+      <a href="index.html#advantages">Почему мы</a>
+      <a href="index.html#about">О салоне</a>
+      <a class="btn btn-gold" href="index.html#booking">Тест-драйв</a>
+    </nav>
+
+    <button class="burger" id="burger" aria-label="Меню" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main class="detail-page" id="detail-root">
+  <div class="wrap">
+    <nav class="breadcrumbs" aria-label="Навигационная цепочка">
+      <a href="index.html">Главная</a>
+      <span class="sep">/</span>
+      <a href="index.html#catalog">Каталог</a>
+      <span class="sep">/</span>
+      <span id="crumb-model">Автомобиль</span>
+    </nav>
+
+    <div class="detail">
+      <div class="detail-media">
+        <img id="detail-image" src="img/maybach.jpg" alt="Автомобиль" width="1280" height="853" />
+        <span class="chip"><span class="dot" style="width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green)"></span><b id="detail-badge">В наличии</b></span>
+      </div>
+
+      <div class="detail-info">
+        <div class="eyebrow" id="detail-tagline" style="margin-bottom:14px">—</div>
+        <h1 id="detail-title">—</h1>
+        <div class="trim" id="detail-trim">—</div>
+        <div class="detail-price" id="detail-price">—</div>
+        <p class="detail-desc" id="detail-desc">—</p>
+
+        <ul class="detail-features" id="detail-features"></ul>
+
+        <a class="btn btn-gold" id="detail-booking" href="index.html#booking">Записаться на тест-драйв</a>
+
+        <div class="spec-table" id="detail-specs"></div>
+
+        <p id="detail-credit" style="font-size:11px;color:#5f6678;margin-top:16px;line-height:1.7"></p>
+      </div>
+    </div>
+
+    <section class="detail-extra">
+      <h2>Похожие <em>автомобили</em></h2>
+      <!-- Карточки строятся из assets/data.js -->
+      <div class="cars" id="related"></div>
+    </section>
+  </div>
+</main>
+
+<footer id="contacts">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="logo" href="index.html">
+          <span class="logo-mark">A</span>
+          <span class="logo-text">AURUM<span>MOTORS</span></span>
+        </a>
+        <p style="margin-top:16px; max-width:32ch; color:#8b93a7; font-size:13px;">
+          Премиальные автомобили с прозрачной историей и сервисом, который не заканчивается передачей ключей.
+        </p>
+      </div>
+      <div>
+        <h4>Навигация</h4>
+        <a href="index.html#catalog">Каталог</a>
+        <a href="index.html#calculator">Лизинг</a>
+        <a href="index.html#advantages">Почему мы</a>
+        <a href="index.html#booking">Тест-драйв</a>
+      </div>
+      <div>
+        <h4>Контакты</h4>
+        <a href="tel:+74950000000">+7 (495) 000-00-00</a>
+        <a href="mailto:sale@aurum-motors.ru">sale@aurum-motors.ru</a>
+        <p>Москва, Пресненская наб., 12</p>
+      </div>
+      <div>
+        <h4>Режим работы</h4>
+        <p>Пн–Пт: 9:00–21:00</p>
+        <p>Сб–Вс: 10:00–20:00</p>
+        <p>Тест-драйв по записи</p>
+      </div>
+    </div>
+
+    <div class="foot-bottom">
+      <span>© 2026 AURUM Motors. Демонстрационный проект.</span>
+      <span>Сделано в OpenCode</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
+<script src="assets/car.js"></script>
+</body>
+</html>
