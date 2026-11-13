@@ -3,218 +3,1093 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Первый сайт в OpenCode</title>
+<title>AURUM Motors — премиальный автосалон</title>
+<meta name="description" content="AURUM Motors — салон автомобилей премиум-класса. Каталог, trade-in, лизинг, тест-драйв." />
 <style>
   :root {
-    --bg: #0b0d12;
-    --card: rgba(255, 255, 255, 0.04);
-    --border: rgba(255, 255, 255, 0.1);
-    --text: #e8ecf4;
+    --bg: #07080b;
+    --bg-2: #0b0d12;
+    --panel: #10131a;
+    --panel-2: #151922;
+    --line: rgba(255, 255, 255, 0.09);
+    --text: #eef0f5;
     --muted: #8b93a7;
-    --accent: #5b8cff;
-    --accent-2: #a855f7;
+    --gold: #d4af37;
+    --gold-2: #f3d98b;
+    --gold-dim: rgba(212, 175, 55, 0.15);
+    --green: #34d399;
+    --radius: 20px;
+    --serif: Georgia, "Times New Roman", serif;
+    --sans: "Segoe UI", system-ui, -apple-system, sans-serif;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
+  html { scroll-behavior: smooth; }
+
   body {
-    min-height: 100vh;
-    display: grid;
-    place-items: center;
-    padding: 24px;
     background: var(--bg);
     color: var(--text);
-    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
-    overflow: hidden;
+    font-family: var(--sans);
+    line-height: 1.6;
+    overflow-x: hidden;
   }
 
-  /* Мягкие светящиеся пятна на фоне */
-  .blob {
+  ::selection { background: var(--gold); color: #000; }
+
+  a { color: inherit; text-decoration: none; }
+
+  img, svg { display: block; }
+
+  .wrap { width: min(1180px, calc(100% - 48px)); margin-inline: auto; }
+
+  /* ---------- Header ---------- */
+  header {
     position: fixed;
+    inset: 0 0 auto 0;
+    z-index: 50;
+    padding: 18px 0;
+    transition: background 0.3s ease, padding 0.3s ease, border-color 0.3s ease;
+    border-bottom: 1px solid transparent;
+  }
+  header.scrolled {
+    padding: 10px 0;
+    background: rgba(7, 8, 11, 0.82);
+    backdrop-filter: blur(16px);
+    border-bottom-color: var(--line);
+  }
+  .nav { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+
+  .logo { display: flex; align-items: center; gap: 12px; }
+  .logo-mark {
+    width: 38px; height: 38px;
+    display: grid; place-items: center;
+    border: 1px solid var(--gold);
     border-radius: 50%;
-    filter: blur(90px);
-    opacity: 0.45;
-    pointer-events: none;
-    animation: float 14s ease-in-out infinite alternate;
+    color: var(--gold-2);
+    font-family: var(--serif);
+    font-size: 19px;
+    box-shadow: 0 0 22px var(--gold-dim), inset 0 0 14px rgba(212, 175, 55, 0.12);
   }
-  .blob.a { width: 420px; height: 420px; background: var(--accent); top: -120px; left: -80px; }
-  .blob.b { width: 380px; height: 380px; background: var(--accent-2); bottom: -140px; right: -60px; animation-delay: -7s; }
+  .logo-text { font-family: var(--serif); font-size: 19px; letter-spacing: 0.22em; }
+  .logo-text span { display: block; font-family: var(--sans); font-size: 9px; letter-spacing: 0.34em; color: var(--muted); margin-top: 2px; }
 
-  @keyframes float {
-    from { transform: translate(0, 0) scale(1); }
-    to   { transform: translate(40px, 30px) scale(1.15); }
-  }
-
-  .card {
+  .menu { display: flex; align-items: center; gap: 30px; }
+  .menu a {
     position: relative;
-    width: min(560px, 100%);
-    padding: 40px 36px;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 24px;
-    backdrop-filter: blur(18px);
-    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
-    animation: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+    font-size: 14px;
+    color: #c3c9d6;
+    transition: color 0.2s ease;
   }
-
-  @keyframes rise {
-    from { opacity: 0; transform: translateY(24px); }
-    to   { opacity: 1; transform: translateY(0); }
+  .menu a::after {
+    content: "";
+    position: absolute;
+    left: 0; bottom: -6px;
+    width: 0; height: 1px;
+    background: var(--gold);
+    transition: width 0.25s ease;
   }
+  .menu a:hover { color: #fff; }
+  .menu a:hover::after { width: 100%; }
 
-  .badge {
+  .btn {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    padding: 6px 12px;
-    font-size: 12px;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: #b9c6ff;
-    background: rgba(91, 140, 255, 0.12);
-    border: 1px solid rgba(91, 140, 255, 0.25);
+    justify-content: center;
+    gap: 10px;
+    padding: 13px 24px;
     border-radius: 999px;
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--text);
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+    white-space: nowrap;
   }
-  .dot {
-    width: 7px; height: 7px;
-    border-radius: 50%;
-    background: #4ade80;
-    box-shadow: 0 0 10px #4ade80;
+  .btn:hover { transform: translateY(-2px); }
+  .btn:active { transform: translateY(0) scale(0.98); }
+
+  .btn-gold {
+    background: linear-gradient(115deg, #f6e3a4, var(--gold) 45%, #a87c1f);
+    border-color: transparent;
+    color: #171204;
+    box-shadow: 0 12px 34px rgba(212, 175, 55, 0.24);
+  }
+  .btn-gold:hover { box-shadow: 0 16px 44px rgba(212, 175, 55, 0.36); }
+
+  .btn-ghost:hover { background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.2); }
+
+  .burger { display: none; background: none; border: 0; color: var(--text); cursor: pointer; padding: 8px; }
+  .burger span { display: block; width: 22px; height: 2px; background: currentColor; margin: 5px 0; transition: 0.25s; }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    position: relative;
+    padding: 168px 0 70px;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: "";
+    position: absolute;
+    width: 780px; height: 780px;
+    top: -260px; right: -180px;
+    background: radial-gradient(circle, rgba(212, 175, 55, 0.17), transparent 62%);
+    pointer-events: none;
+  }
+  .hero::after {
+    content: "";
+    position: absolute;
+    width: 620px; height: 620px;
+    bottom: -320px; left: -220px;
+    background: radial-gradient(circle, rgba(90, 120, 255, 0.12), transparent 65%);
+    pointer-events: none;
   }
 
+  .hero-grid {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: 40px;
+    align-items: center;
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 7px 14px;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 999px;
+    background: rgba(212, 175, 55, 0.07);
+    color: var(--gold-2);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+  .eyebrow i { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 10px var(--gold); }
+
   h1 {
-    margin: 20px 0 10px;
-    font-size: clamp(28px, 5vw, 40px);
-    line-height: 1.15;
+    margin: 24px 0 18px;
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(38px, 5.4vw, 68px);
+    line-height: 1.06;
     letter-spacing: -0.02em;
   }
-  h1 span {
-    background: linear-gradient(100deg, #7aa2ff, #c084fc);
+  h1 em {
+    font-style: italic;
+    background: linear-gradient(100deg, var(--gold-2), var(--gold) 55%, #8f6a16);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
   }
 
-  p.lead {
-    color: var(--muted);
-    font-size: 16px;
-    line-height: 1.6;
-    max-width: 44ch;
-  }
+  .hero p.lead { color: var(--muted); font-size: 17px; max-width: 48ch; }
 
-  .row {
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+
+  .hero-stats {
     display: flex;
+    gap: 34px;
+    margin-top: 42px;
+    padding-top: 26px;
+    border-top: 1px solid var(--line);
     flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 28px;
   }
-
-  button {
-    font: inherit;
-    padding: 12px 20px;
-    border-radius: 12px;
-    border: 1px solid var(--border);
-    background: rgba(255, 255, 255, 0.05);
-    color: var(--text);
-    cursor: pointer;
-    transition: transform 0.15s ease, background 0.2s ease, border-color 0.2s ease;
+  .stat b {
+    display: block;
+    font-family: var(--serif);
+    font-size: 31px;
+    font-weight: 400;
+    color: var(--gold-2);
+    line-height: 1.1;
   }
-  button:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.22); }
-  button:active { transform: scale(0.97); }
+  .stat span { font-size: 12px; color: var(--muted); letter-spacing: 0.04em; }
 
-  button.primary {
-    background: linear-gradient(100deg, var(--accent), var(--accent-2));
-    border-color: transparent;
-    color: #fff;
-    font-weight: 600;
+  .hero-visual { position: relative; }
+  .hero-visual .glow {
+    position: absolute;
+    inset: 18% 2% 8%;
+    background: radial-gradient(ellipse at 50% 60%, rgba(212, 175, 55, 0.22), transparent 65%);
+    filter: blur(24px);
   }
-  button.primary:hover { filter: brightness(1.1); }
+  .car-stage { position: relative; animation: hover-car 6s ease-in-out infinite; }
+  @keyframes hover-car {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  .car-stage svg { width: 100%; height: auto; filter: drop-shadow(0 26px 42px rgba(0, 0, 0, 0.65)); }
 
-  .meta {
+  .chip {
+    position: absolute;
     display: flex;
-    justify-content: space-between;
-    gap: 16px;
-    margin-top: 30px;
-    padding-top: 20px;
-    border-top: 1px solid var(--border);
-    font-size: 13px;
-    color: var(--muted);
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: rgba(16, 19, 26, 0.85);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    backdrop-filter: blur(10px);
+    font-size: 12px;
+    color: #c9cfdd;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.45);
   }
-  .meta strong { display: block; margin-top: 4px; color: var(--text); font-weight: 600; }
+  .chip b { color: var(--gold-2); font-size: 13px; }
+  .chip.c1 { top: 12%; left: -4%; }
+  .chip.c2 { bottom: 16%; right: -2%; }
+  .chip .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 10px var(--green); }
+
+  /* ---------- Marquee ---------- */
+  .marquee {
+    position: relative;
+    z-index: 1;
+    border-block: 1px solid var(--line);
+    background: var(--bg-2);
+    overflow: hidden;
+    padding: 18px 0;
+  }
+  .marquee-track {
+    display: flex;
+    gap: 60px;
+    width: max-content;
+    animation: scroll 28s linear infinite;
+  }
+  .marquee span {
+    font-family: var(--serif);
+    font-size: 15px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(238, 240, 245, 0.34);
+    white-space: nowrap;
+  }
+  @keyframes scroll { to { transform: translateX(-50%); } }
+
+  /* ---------- Sections ---------- */
+  section { padding: 96px 0; }
+  .section-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 32px; margin-bottom: 44px; flex-wrap: wrap; }
+  .section-head h2 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(30px, 3.6vw, 46px);
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+  }
+  .section-head h2 em { font-style: italic; color: var(--gold-2); }
+  .section-head p { color: var(--muted); max-width: 42ch; font-size: 15px; }
+
+  /* ---------- Catalog ---------- */
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+  .filter {
+    padding: 9px 18px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--muted);
+    font: inherit;
+    font-size: 13px;
+    cursor: pointer;
+    transition: 0.2s ease;
+  }
+  .filter:hover { color: #fff; border-color: rgba(255, 255, 255, 0.24); }
+  .filter.active {
+    background: var(--gold-dim);
+    border-color: rgba(212, 175, 55, 0.45);
+    color: var(--gold-2);
+  }
+
+  .cars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .car {
+    position: relative;
+    background: linear-gradient(180deg, var(--panel), var(--bg-2));
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  .car.visible { opacity: 1; transform: translateY(0); transition: opacity 0.5s ease, transform 0.5s ease, border-color 0.3s, box-shadow 0.3s; }
+  .car:hover { border-color: rgba(212, 175, 55, 0.4); box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55); }
+  .car.hidden { display: none; }
+
+  .car-media {
+    position: relative;
+    height: 176px;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    border-bottom: 1px solid var(--line);
+  }
+  .car-media::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 95%, var(--car-glow, rgba(212, 175, 55, 0.3)), transparent 68%);
+    opacity: 0.9;
+  }
+  .car-media svg { width: 88%; position: relative; filter: drop-shadow(0 14px 22px rgba(0, 0, 0, 0.55)); transition: transform 0.35s ease; }
+  .car:hover .car-media svg { transform: scale(1.05) translateX(4px); }
+
+  .car-badge {
+    position: absolute;
+    top: 12px; left: 12px;
+    z-index: 2;
+    padding: 5px 10px;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #e9e2c8;
+    background: rgba(7, 8, 11, 0.65);
+    border: 1px solid rgba(212, 175, 55, 0.32);
+    border-radius: 999px;
+    backdrop-filter: blur(6px);
+  }
+  .fav {
+    position: absolute;
+    top: 10px; right: 10px;
+    z-index: 2;
+    width: 34px; height: 34px;
+    display: grid; place-items: center;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    background: rgba(7, 8, 11, 0.6);
+    color: #aab1c0;
+    cursor: pointer;
+    transition: 0.2s ease;
+  }
+  .fav:hover { color: #fff; border-color: rgba(255, 255, 255, 0.3); }
+  .fav.on { color: #ff5f7a; border-color: rgba(255, 95, 122, 0.5); background: rgba(255, 95, 122, 0.1); }
+  .fav svg { width: 15px; height: 15px; }
+
+  .car-body { padding: 20px 20px 22px; }
+  .car-body h3 { font-size: 17px; font-weight: 600; letter-spacing: -0.01em; }
+  .car-body .trim { font-size: 12px; color: var(--muted); margin-top: 3px; }
+
+  .specs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 18px 0;
+    padding: 14px 0;
+    border-block: 1px solid var(--line);
+  }
+  .specs div { text-align: center; }
+  .specs b { display: block; font-size: 14px; font-weight: 600; }
+  .specs span { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; }
+
+  .price-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .price { font-family: var(--serif); font-size: 20px; color: var(--gold-2); }
+  .price small { display: block; font-family: var(--sans); font-size: 10px; color: var(--muted); letter-spacing: 0.04em; }
+  .more {
+    font-size: 12px;
+    color: #c3c9d6;
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    transition: 0.2s ease;
+    background: transparent;
+    font-family: inherit;
+    cursor: pointer;
+  }
+  .more:hover { color: #000; background: var(--gold); border-color: var(--gold); }
+
+  /* ---------- Advantages ---------- */
+  .advantages { background: var(--bg-2); border-block: 1px solid var(--line); }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .feature {
+    position: relative;
+    padding: 28px 24px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    transition: 0.3s ease;
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  .feature.visible { opacity: 1; transform: none; transition: 0.5s ease; }
+  .feature:hover { border-color: rgba(212, 175, 55, 0.32); background: linear-gradient(180deg, rgba(212, 175, 55, 0.07), transparent); }
+  .feature .ico {
+    width: 44px; height: 44px;
+    display: grid; place-items: center;
+    border-radius: 12px;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    background: rgba(212, 175, 55, 0.08);
+    color: var(--gold-2);
+    margin-bottom: 18px;
+  }
+  .feature .ico svg { width: 20px; height: 20px; }
+  .feature h3 { font-size: 16px; margin-bottom: 8px; }
+  .feature p { font-size: 13.5px; color: var(--muted); }
+
+  /* ---------- About / form ---------- */
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+  .about-copy h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(30px, 3.4vw, 44px); line-height: 1.14; }
+  .about-copy h2 em { font-style: italic; color: var(--gold-2); }
+  .about-copy p { color: var(--muted); margin-top: 18px; font-size: 15px; }
+  .ticks { list-style: none; margin-top: 26px; display: grid; gap: 12px; }
+  .ticks li { display: flex; gap: 12px; align-items: flex-start; font-size: 14px; color: #cfd5e1; }
+  .ticks svg { width: 18px; height: 18px; flex: 0 0 auto; color: var(--gold); margin-top: 3px; }
+
+  .form-card {
+    position: relative;
+    padding: 34px 30px;
+    background: linear-gradient(180deg, var(--panel-2), var(--bg-2));
+    border: 1px solid var(--line);
+    border-radius: 24px;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+  }
+  .form-card::before {
+    content: "";
+    position: absolute; inset: -1px;
+    border-radius: 24px;
+    padding: 1px;
+    background: linear-gradient(140deg, rgba(212, 175, 55, 0.5), transparent 40%, transparent 70%, rgba(212, 175, 55, 0.2));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+  .form-card h3 { font-family: var(--serif); font-weight: 400; font-size: 24px; }
+  .form-card p.sub { font-size: 13px; color: var(--muted); margin: 6px 0 22px; }
+
+  .field { margin-bottom: 14px; }
+  .field label { display: block; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 7px; }
+  .field input, .field select {
+    width: 100%;
+    padding: 13px 15px;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--text);
+    font: inherit;
+    font-size: 14px;
+    outline: none;
+    transition: 0.2s ease;
+    appearance: none;
+  }
+  .field select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238b93a7' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    padding-right: 38px;
+  }
+  .field input::placeholder { color: #5f6678; }
+  .field input:focus, .field select:focus { border-color: rgba(212, 175, 55, 0.55); background: rgba(212, 175, 55, 0.05); }
+  .field input:invalid:not(:placeholder-shown) { border-color: rgba(255, 95, 122, 0.5); }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  .form-note { font-size: 11px; color: #667087; margin-top: 12px; }
+  .toast {
+    margin-top: 14px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: rgba(52, 211, 153, 0.1);
+    border: 1px solid rgba(52, 211, 153, 0.35);
+    color: #9ff3cd;
+    font-size: 13px;
+    display: none;
+  }
+  .toast.show { display: block; animation: rise 0.35s ease both; }
+  @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+  /* ---------- Footer ---------- */
+  footer { border-top: 1px solid var(--line); background: var(--bg-2); padding: 56px 0 28px; }
+  .foot-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 32px; }
+  .foot-grid h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.16em; color: var(--muted); margin-bottom: 14px; }
+  .foot-grid a, .foot-grid p { display: block; font-size: 14px; color: #c3c9d6; margin-bottom: 8px; }
+  .foot-grid a:hover { color: var(--gold-2); }
+  .foot-bottom { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); font-size: 12px; color: #667087; }
+
+  /* ---------- Reveal ---------- */
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.65s ease, transform 0.65s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 980px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 20px; }
+    .hero { padding-top: 140px; }
+    .hero-visual { max-width: 620px; margin-inline: auto; width: 100%; }
+    .cars { grid-template-columns: repeat(2, 1fr); }
+    .grid-3 { grid-template-columns: repeat(2, 1fr); }
+    .split { grid-template-columns: 1fr; gap: 36px; }
+    .foot-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (max-width: 720px) {
+    .menu {
+      position: fixed;
+      inset: 0 0 auto 0;
+      padding: 96px 24px 28px;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 20px;
+      background: rgba(7, 8, 11, 0.97);
+      border-bottom: 1px solid var(--line);
+      transform: translateY(-110%);
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .menu.open { transform: none; }
+    .menu .btn { width: 100%; }
+    .burger { display: block; z-index: 60; }
+    .burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .burger.open span:nth-child(2) { opacity: 0; }
+    .burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .cars, .grid-3 { grid-template-columns: 1fr; }
+    .hero-stats { gap: 22px; }
+    .chip.c1 { left: 0; }
+    .chip.c2 { right: 0; }
+    section { padding: 68px 0; }
+    .field-row { grid-template-columns: 1fr; }
+    .foot-grid { grid-template-columns: 1fr; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition-duration: 0.01ms !important; }
+    html { scroll-behavior: auto; }
+  }
 </style>
 </head>
 <body>
-  <div class="blob a"></div>
-  <div class="blob b"></div>
 
-  <main class="card">
-    <div class="badge"><span class="dot"></span> локальный сервер</div>
+<!-- Общий силуэт автомобиля для карточек -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="bodyGold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2a2f3d" />
+      <stop offset="0.45" stop-color="#171b24" />
+      <stop offset="1" stop-color="#0a0c11" />
+    </linearGradient>
+    <linearGradient id="goldLine" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#8f6a16" />
+      <stop offset="0.5" stop-color="#f3d98b" />
+      <stop offset="1" stop-color="#a87c1f" />
+    </linearGradient>
+  </defs>
+  <symbol id="car" viewBox="0 0 900 360">
+    <ellipse cx="450" cy="322" rx="360" ry="18" fill="#000" opacity="0.45" />
+    <path d="M50 300 L50 284 C50 248 76 230 112 224 L172 170 C200 140 238 124 284 122 L520 122 C566 124 606 142 636 172 L676 220 C726 226 754 246 760 280 L762 300 Z"
+          fill="url(#bodyGold)" stroke="url(#goldLine)" stroke-width="2.5" />
+    <path d="M206 214 L272 162 C292 144 318 136 348 136 L500 136 C532 136 560 148 582 170 L612 202 Z"
+          fill="#05070b" stroke="url(#goldLine)" stroke-width="1.6" opacity="0.9" />
+    <path d="M410 136 L410 202" stroke="#2a2f3d" stroke-width="2" />
+    <path d="M196 160 C240 186 620 190 700 226" stroke="url(#goldLine)" stroke-width="1.2" fill="none" opacity="0.5" />
+    <rect x="398" y="244" width="46" height="6" rx="3" fill="url(#goldLine)" opacity="0.8" />
+    <path d="M736 246 C752 250 758 262 758 276" stroke="#f3d98b" stroke-width="4" stroke-linecap="round" opacity="0.9" />
+    <path d="M56 256 C64 266 78 272 96 274" stroke="#8f6a16" stroke-width="3" stroke-linecap="round" opacity="0.8" />
+    <g>
+      <circle cx="206" cy="298" r="56" fill="#07080b" stroke="#1c212c" stroke-width="8" />
+      <circle cx="206" cy="298" r="34" fill="none" stroke="url(#goldLine)" stroke-width="3" opacity="0.85" />
+      <circle cx="206" cy="298" r="12" fill="#151922" stroke="#3a4152" stroke-width="2" />
+      <g stroke="#2a2f3d" stroke-width="2">
+        <path d="M206 266 L206 282 M206 314 L206 330 M174 298 L190 298 M222 298 L238 298" />
+      </g>
+    </g>
+    <g>
+      <circle cx="668" cy="298" r="56" fill="#07080b" stroke="#1c212c" stroke-width="8" />
+      <circle cx="668" cy="298" r="34" fill="none" stroke="url(#goldLine)" stroke-width="3" opacity="0.85" />
+      <circle cx="668" cy="298" r="12" fill="#151922" stroke="#3a4152" stroke-width="2" />
+      <g stroke="#2a2f3d" stroke-width="2">
+        <path d="M668 266 L668 282 M668 314 L668 330 M636 298 L652 298 M684 298 L700 298" />
+      </g>
+    </g>
+  </symbol>
+</svg>
 
-    <h1>Привет, <span id="name">Антон</span> 👋</h1>
-    <p class="lead">
-      Это первый сайт, собранный в OpenCode: один HTML-файл, без сборки и зависимостей.
-      Кнопки справа работают на чистом JavaScript.
-    </p>
+<header id="header">
+  <div class="wrap nav">
+    <a class="logo" href="#top" aria-label="AURUM Motors — на главную">
+      <span class="logo-mark">A</span>
+      <span class="logo-text">AURUM<span>MOTORS</span></span>
+    </a>
 
-    <div class="row">
-      <button class="primary" id="greet">Поздороваться</button>
-      <button id="theme">Сменить тему</button>
-      <button id="time">Показать время</button>
+    <nav class="menu" id="menu">
+      <a href="#catalog">Каталог</a>
+      <a href="#advantages">Почему мы</a>
+      <a href="#about">О салоне</a>
+      <a href="#contacts">Контакты</a>
+      <a class="btn btn-gold" href="#booking">Тест-драйв</a>
+    </nav>
+
+    <button class="burger" id="burger" aria-label="Меню" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main id="top">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <div class="eyebrow"><i></i> Автосалон премиум-класса</div>
+        <h1>Автомобили, которые <em>говорят за вас</em></h1>
+        <p class="lead">
+          Коллекция проверенных автомобилей мировых брендов. Прозрачная история,
+          гарантия и персональный менеджер на каждом этапе — от выбора до передачи ключей.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-gold" href="#catalog">Смотреть каталог</a>
+          <a class="btn btn-ghost" href="#booking">Записаться на тест-драйв</a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat"><b data-count="120">0</b><span>автомобилей в наличии</span></div>
+          <div class="stat"><b data-count="14">0</b><span>лет на рынке</span></div>
+          <div class="stat"><b data-count="98" data-suffix="%">0</b><span>клиентов рекомендуют</span></div>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="glow"></div>
+        <div class="car-stage">
+          <svg viewBox="0 0 900 360" role="img" aria-label="Силуэт премиального автомобиля">
+            <use href="#car" />
+          </svg>
+        </div>
+        <div class="chip c1"><span class="dot"></span> В наличии <b>сегодня</b></div>
+        <div class="chip c2">Гарантия <b>2 года</b></div>
+      </div>
     </div>
+  </section>
 
-    <div class="meta">
-      <div>Статус<strong id="status">Работает</strong></div>
-      <div>Часы<strong id="clock">--:--:--</strong></div>
-      <div>Клики<strong id="clicks">0</strong></div>
+  <!-- MARQUEE -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>Mercedes-Benz</span><span>Bentley</span><span>Porsche</span><span>Rolls-Royce</span><span>Range Rover</span><span>BMW</span><span>Audi</span><span>Lamborghini</span>
+      <span>Mercedes-Benz</span><span>Bentley</span><span>Porsche</span><span>Rolls-Royce</span><span>Range Rover</span><span>BMW</span><span>Audi</span><span>Lamborghini</span>
     </div>
-  </main>
+  </div>
+
+  <!-- CATALOG -->
+  <section id="catalog">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div>
+          <h2>Избранное <em>собрание</em></h2>
+          <p>Каждый автомобиль проходит 120-пунктную проверку и юридическую экспертизу.</p>
+        </div>
+        <a class="btn btn-ghost" href="#booking">Подобрать по параметрам</a>
+      </div>
+
+      <div class="filters" role="tablist" aria-label="Фильтр каталога">
+        <button class="filter active" data-filter="all">Все</button>
+        <button class="filter" data-filter="sedan">Седаны</button>
+        <button class="filter" data-filter="coupe">Купе</button>
+        <button class="filter" data-filter="suv">SUV</button>
+        <button class="filter" data-filter="ev">Электро</button>
+      </div>
+
+      <div class="cars" id="cars">
+        <!-- 1 -->
+        <article class="car reveal" data-cat="sedan">
+          <div class="car-media" style="--car-glow: rgba(212,175,55,0.32)">
+            <span class="car-badge">В наличии</span>
+            <button class="fav" aria-label="В избранное" aria-pressed="false">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.6-9.3-8.6C1 9 2.6 5.5 6 5.5c2 0 3.2 1 4 2.2.8-1.2 2-2.2 4-2.2 3.4 0 5 3.5 3.3 6.9C19 16.4 12 21 12 21z"/></svg>
+            </button>
+            <svg viewBox="0 0 900 360" aria-hidden="true"><use href="#car" /></svg>
+          </div>
+          <div class="car-body">
+            <h3>Mercedes-Maybach</h3>
+            <div class="trim">S 680 · 2024</div>
+            <div class="specs">
+              <div><b>612</b><span>л.с.</span></div>
+              <div><b>4.5 с</b><span>0–100</span></div>
+              <div><b>V12</b><span>4.0</span></div>
+            </div>
+            <div class="price-row">
+              <div class="price">28 900 000 ₽<small>или в лизинг от 289 000 ₽/мес</small></div>
+              <button class="more">Подробнее</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- 2 -->
+        <article class="car reveal" data-cat="coupe">
+          <div class="car-media" style="--car-glow: rgba(120,150,255,0.26)">
+            <span class="car-badge">Новинка</span>
+            <button class="fav" aria-label="В избранное" aria-pressed="false">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.6-9.3-8.6C1 9 2.6 5.5 6 5.5c2 0 3.2 1 4 2.2.8-1.2 2-2.2 4-2.2 3.4 0 5 3.5 3.3 6.9C19 16.4 12 21 12 21z"/></svg>
+            </button>
+            <svg viewBox="0 0 900 360" aria-hidden="true"><use href="#car" /></svg>
+          </div>
+          <div class="car-body">
+            <h3>Bentley Continental</h3>
+            <div class="trim">GT Speed · 2024</div>
+            <div class="specs">
+              <div><b>659</b><span>л.с.</span></div>
+              <div><b>3.6 с</b><span>0–100</span></div>
+              <div><b>W12</b><span>6.0</span></div>
+            </div>
+            <div class="price-row">
+              <div class="price">32 500 000 ₽<small>или в лизинг от 325 000 ₽/мес</small></div>
+              <button class="more">Подробнее</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- 3 -->
+        <article class="car reveal" data-cat="coupe">
+          <div class="car-media" style="--car-glow: rgba(255,120,90,0.26)">
+            <span class="car-badge">1 владелец</span>
+            <button class="fav" aria-label="В избранное" aria-pressed="false">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.6-9.3-8.6C1 9 2.6 5.5 6 5.5c2 0 3.2 1 4 2.2.8-1.2 2-2.2 4-2.2 3.4 0 5 3.5 3.3 6.9C19 16.4 12 21 12 21z"/></svg>
+            </button>
+            <svg viewBox="0 0 900 360" aria-hidden="true"><use href="#car" /></svg>
+          </div>
+          <div class="car-body">
+            <h3>Porsche 911</h3>
+            <div class="trim">Turbo S · 2023</div>
+            <div class="specs">
+              <div><b>650</b><span>л.с.</span></div>
+              <div><b>2.7 с</b><span>0–100</span></div>
+              <div><b>Flat-6</b><span>3.8</span></div>
+            </div>
+            <div class="price-row">
+              <div class="price">24 700 000 ₽<small>или в лизинг от 247 000 ₽/мес</small></div>
+              <button class="more">Подробнее</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- 4 -->
+        <article class="car reveal" data-cat="suv">
+          <div class="car-media" style="--car-glow: rgba(80,210,160,0.24)">
+            <span class="car-badge">В наличии</span>
+            <button class="fav" aria-label="В избранное" aria-pressed="false">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.6-9.3-8.6C1 9 2.6 5.5 6 5.5c2 0 3.2 1 4 2.2.8-1.2 2-2.2 4-2.2 3.4 0 5 3.5 3.3 6.9C19 16.4 12 21 12 21z"/></svg>
+            </button>
+            <svg viewBox="0 0 900 360" aria-hidden="true"><use href="#car" /></svg>
+          </div>
+          <div class="car-body">
+            <h3>Range Rover</h3>
+            <div class="trim">Autobiography · 2024</div>
+            <div class="specs">
+              <div><b>530</b><span>л.с.</span></div>
+              <div><b>4.6 с</b><span>0–100</span></div>
+              <div><b>V8</b><span>4.4</span></div>
+            </div>
+            <div class="price-row">
+              <div class="price">19 300 000 ₽<small>или в лизинг от 193 000 ₽/мес</small></div>
+              <button class="more">Подробнее</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- 5 -->
+        <article class="car reveal" data-cat="sedan">
+          <div class="car-media" style="--car-glow: rgba(150,120,255,0.26)">
+            <span class="car-badge">Гарантия 2 года</span>
+            <button class="fav" aria-label="В избранное" aria-pressed="false">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.6-9.3-8.6C1 9 2.6 5.5 6 5.5c2 0 3.2 1 4 2.2.8-1.2 2-2.2 4-2.2 3.4 0 5 3.5 3.3 6.9C19 16.4 12 21 12 21z"/></svg>
+            </button>
+            <svg viewBox="0 0 900 360" aria-hidden="true"><use href="#car" /></svg>
+          </div>
+          <div class="car-body">
+            <h3>Rolls-Royce Ghost</h3>
+            <div class="trim">Extended · 2023</div>
+            <div class="specs">
+              <div><b>571</b><span>л.с.</span></div>
+              <div><b>4.8 с</b><span>0–100</span></div>
+              <div><b>V12</b><span>6.75</span></div>
+            </div>
+            <div class="price-row">
+              <div class="price">41 200 000 ₽<small>или в лизинг от 412 000 ₽/мес</small></div>
+              <button class="more">Подробнее</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- 6 -->
+        <article class="car reveal" data-cat="ev">
+          <div class="car-media" style="--car-glow: rgba(80,190,255,0.3)">
+            <span class="car-badge">Электро</span>
+            <button class="fav" aria-label="В избранное" aria-pressed="false">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.6-9.3-8.6C1 9 2.6 5.5 6 5.5c2 0 3.2 1 4 2.2.8-1.2 2-2.2 4-2.2 3.4 0 5 3.5 3.3 6.9C19 16.4 12 21 12 21z"/></svg>
+            </button>
+            <svg viewBox="0 0 900 360" aria-hidden="true"><use href="#car" /></svg>
+          </div>
+          <div class="car-body">
+            <h3>Audi RS e-tron GT</h3>
+            <div class="trim">Performance · 2024</div>
+            <div class="specs">
+              <div><b>646</b><span>л.с.</span></div>
+              <div><b>3.3 с</b><span>0–100</span></div>
+              <div><b>488</b><span>км</span></div>
+            </div>
+            <div class="price-row">
+              <div class="price">14 900 000 ₽<small>или в лизинг от 149 000 ₽/мес</small></div>
+              <button class="more">Подробнее</button>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ADVANTAGES -->
+  <section class="advantages" id="advantages">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div>
+          <h2>Спокойствие <em>по умолчанию</em></h2>
+          <p>Мы берём на себя всё, что обычно отнимает время и нервы при покупке автомобиля.</p>
+        </div>
+      </div>
+
+      <div class="grid-3">
+        <article class="feature">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3l8 4v5c0 5-3.4 8-8 9-4.6-1-8-4-8-9V7l8-4z"/><path d="M9 12l2 2 4-4"/></svg></div>
+          <h3>120-пунктная проверка</h3>
+          <p>Диагностика, толщиномер, юридическая чистота и проверка пробега — до сделки.</p>
+        </article>
+        <article class="feature">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 16l2-6h14l2 6"/><path d="M5 16h14v3H5z"/><circle cx="7.5" cy="19.5" r="1.5"/><circle cx="16.5" cy="19.5" r="1.5"/></svg></div>
+          <h3>Trade-in за 1 день</h3>
+          <p>Оценим ваш автомобиль по рынку и зачтём стоимость в счёт нового.</p>
+        </article>
+        <article class="feature">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18M7 15h4"/></svg></div>
+          <h3>Лизинг от 0%</h3>
+          <p>Индивидуальные программы для частных лиц и компаний, решение за 30 минут.</p>
+        </article>
+        <article class="feature">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 2a10 10 0 100 20 10 10 0 000-20z"/><path d="M12 6v6l4 2"/></svg></div>
+          <h3>Консьерж 24/7</h3>
+          <p>Сервис, эвакуация, бронирование отелей и парковок — одним звонком.</p>
+        </article>
+        <article class="feature">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 19V7l8-4 8 4v12"/><path d="M9 19v-6h6v6"/></svg></div>
+          <h3>Гарантия 2 года</h3>
+          <p>Официальная гарантия на двигатель, трансмиссию и электронику.</p>
+        </article>
+        <article class="feature">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 12h18M12 3v18"/><circle cx="12" cy="12" r="9"/></svg></div>
+          <h3>Доставка по России</h3>
+          <p>Закрытый автовоз, страховка на всё время пути и фотоотчёт.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT + FORM -->
+  <section id="about">
+    <div class="wrap split">
+      <div class="about-copy reveal">
+        <h2>Салон, в который <em>возвращаются</em></h2>
+        <p>
+          AURUM Motors работает с 2012 года. За это время мы передали клиентам более
+          1 800 автомобилей и построили сервис, где решение принимаете вы — без давления
+          и скрытых условий.
+        </p>
+        <ul class="ticks">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Прозрачная история каждого автомобиля</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Фиксированная цена в договоре</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Персональный менеджер до и после покупки</li>
+        </ul>
+      </div>
+
+      <div class="form-card reveal" id="booking">
+        <h3>Запись на тест-драйв</h3>
+        <p class="sub">Оставьте контакты — подберём удобное время и автомобиль.</p>
+        <form id="lead-form" novalidate>
+          <div class="field">
+            <label for="name">Ваше имя</label>
+            <input id="name" name="name" type="text" placeholder="Антон" required minlength="2" />
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="phone">Телефон</label>
+              <input id="phone" name="phone" type="tel" placeholder="+7 (___) ___-__-__" required pattern="[\+0-9\s\(\)\-]{10,}" />
+            </div>
+            <div class="field">
+              <label for="car">Автомобиль</label>
+              <select id="car" name="car">
+                <option>Mercedes-Maybach S 680</option>
+                <option>Bentley Continental GT</option>
+                <option>Porsche 911 Turbo S</option>
+                <option>Range Rover Autobiography</option>
+                <option>Rolls-Royce Ghost</option>
+                <option>Audi RS e-tron GT</option>
+                <option>Помогите с выбором</option>
+              </select>
+            </div>
+          </div>
+          <button class="btn btn-gold" type="submit" style="width:100%; margin-top:8px;">Отправить заявку</button>
+          <div class="form-note">Демо-форма: данные не отправляются на сервер.</div>
+          <div class="toast" id="toast" role="status">Спасибо! Заявка принята — менеджер свяжется с вами.</div>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer id="contacts">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="logo" href="#top">
+          <span class="logo-mark">A</span>
+          <span class="logo-text">AURUM<span>MOTORS</span></span>
+        </a>
+        <p style="margin-top:16px; max-width:32ch; color:#8b93a7; font-size:13px;">
+          Премиальные автомобили с прозрачной историей и сервисом, который не заканчивается передачей ключей.
+        </p>
+      </div>
+      <div>
+        <h4>Навигация</h4>
+        <a href="#catalog">Каталог</a>
+        <a href="#advantages">Почему мы</a>
+        <a href="#about">О салоне</a>
+        <a href="#booking">Тест-драйв</a>
+      </div>
+      <div>
+        <h4>Контакты</h4>
+        <a href="tel:+74950000000">+7 (495) 000-00-00</a>
+        <a href="mailto:sale@aurum-motors.ru">sale@aurum-motors.ru</a>
+        <p>Москва, Пресненская наб., 12</p>
+      </div>
+      <div>
+        <h4>Режим работы</h4>
+        <p>Пн–Пт: 9:00–21:00</p>
+        <p>Сб–Вс: 10:00–20:00</p>
+        <p>Тест-драйв по записи</p>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 AURUM Motors. Демонстрационный проект.</span>
+      <span>Сделано в OpenCode</span>
+    </div>
+  </div>
+</footer>
 
 <script>
-  const greetings = [
-    "Привет! Рад тебя видеть.",
-    "Сайт жив и отвечает.",
-    "JavaScript на месте.",
-    "Можно деплоить на хостинг."
-  ];
-  let i = 0;
-  let clicks = 0;
+  /* ---------- Header ---------- */
+  const header = document.getElementById("header");
+  const burger = document.getElementById("burger");
+  const menu = document.getElementById("menu");
 
-  const clock = document.getElementById("clock");
-  const tick = () => {
-    clock.textContent = new Date().toLocaleTimeString("ru-RU");
-  };
-  tick();
-  setInterval(tick, 1000);
+  const onScroll = () => header.classList.toggle("scrolled", window.scrollY > 12);
+  onScroll();
+  window.addEventListener("scroll", onScroll, { passive: true });
 
-  document.getElementById("greet").addEventListener("click", () => {
-    clicks++;
-    document.getElementById("clicks").textContent = clicks;
-    document.getElementById("status").textContent = greetings[i % greetings.length];
-    i++;
+  burger.addEventListener("click", () => {
+    const open = menu.classList.toggle("open");
+    burger.classList.toggle("open", open);
+    burger.setAttribute("aria-expanded", String(open));
   });
 
-  document.getElementById("time").addEventListener("click", () => {
-    document.getElementById("status").textContent =
-      "Сейчас " + new Date().toLocaleTimeString("ru-RU");
+  menu.querySelectorAll("a").forEach((a) =>
+    a.addEventListener("click", () => {
+      menu.classList.remove("open");
+      burger.classList.remove("open");
+      burger.setAttribute("aria-expanded", "false");
+    })
+  );
+
+  /* ---------- Reveal on scroll ---------- */
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        e.target.classList.add("visible");
+        io.unobserve(e.target);
+      });
+    },
+    { threshold: 0.12 }
+  );
+  document.querySelectorAll(".reveal, .feature").forEach((el) => io.observe(el));
+
+  /* ---------- Catalog filters ---------- */
+  const filters = document.querySelectorAll(".filter");
+  const cars = document.querySelectorAll(".car");
+  const carsWrap = document.getElementById("cars");
+
+  filters.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      filters.forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+      const f = btn.dataset.filter;
+      const list = [...cars];
+      list.forEach((card) => {
+        const show = f === "all" || card.dataset.cat === f;
+        card.classList.toggle("hidden", !show);
+      });
+      // Перезапускаем анимацию появления в новом наборе
+      list.filter((c) => !c.classList.contains("hidden")).forEach((c, i) => {
+        c.style.transitionDelay = i * 40 + "ms";
+        c.classList.remove("visible");
+        requestAnimationFrame(() => requestAnimationFrame(() => c.classList.add("visible")));
+      });
+      carsWrap.dataset.filter = f;
+    });
   });
 
-  let light = false;
-  document.getElementById("theme").addEventListener("click", () => {
-    light = !light;
-    const root = document.documentElement;
-    if (light) {
-      root.style.setProperty("--bg", "#f4f6fb");
-      root.style.setProperty("--card", "rgba(255,255,255,0.75)");
-      root.style.setProperty("--border", "rgba(15,23,42,0.1)");
-      root.style.setProperty("--text", "#0f172a");
-      root.style.setProperty("--muted", "#5b6478");
-    } else {
-      root.style.setProperty("--bg", "#0b0d12");
-      root.style.setProperty("--card", "rgba(255,255,255,0.04)");
-      root.style.setProperty("--border", "rgba(255,255,255,0.1)");
-      root.style.setProperty("--text", "#e8ecf4");
-      root.style.setProperty("--muted", "#8b93a7");
+  /* ---------- Favorites ---------- */
+  document.querySelectorAll(".fav").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const on = btn.classList.toggle("on");
+      btn.setAttribute("aria-pressed", String(on));
+    });
+  });
+
+  /* ---------- Counters ---------- */
+  const counters = document.querySelectorAll("[data-count]");
+  const counterIO = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        const el = e.target;
+        const target = Number(el.dataset.count);
+        const suffix = el.dataset.suffix || "";
+        const start = performance.now();
+        const dur = 1200;
+        const step = (now) => {
+          const p = Math.min((now - start) / dur, 1);
+          const eased = 1 - Math.pow(1 - p, 3);
+          el.textContent = Math.round(target * eased) + suffix;
+          if (p < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+        counterIO.unobserve(el);
+      });
+    },
+    { threshold: 0.5 }
+  );
+  counters.forEach((c) => counterIO.observe(c));
+
+  /* ---------- Form ---------- */
+  const form = document.getElementById("lead-form");
+  const toast = document.getElementById("toast");
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
     }
+    const name = form.name.value.trim();
+    toast.textContent = `Спасибо, ${name}! Заявка принята — менеджер свяжется с вами.`;
+    toast.classList.add("show");
+    form.reset();
+    setTimeout(() => toast.classList.remove("show"), 6000);
+  });
+
+  /* ---------- "Подробнее" (демо) ---------- */
+  document.querySelectorAll(".more").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const card = btn.closest(".car");
+      const title = card.querySelector("h3").textContent + " " + card.querySelector(".trim").textContent;
+      const select = document.getElementById("car");
+      // Пытаемся выбрать соответствующую модель в форме
+      [...select.options].forEach((o) => {
+        if (title.toLowerCase().includes(o.text.split(" ")[0].toLowerCase())) select.value = o.value;
+      });
+      document.getElementById("booking").scrollIntoView({ behavior: "smooth", block: "center" });
+    });
   });
 </script>
 </body>
